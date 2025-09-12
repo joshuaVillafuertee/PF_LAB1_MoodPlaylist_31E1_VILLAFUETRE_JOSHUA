@@ -1,0 +1,52 @@
+﻿@model PF_LAB1_MoodPlaylist_Section_VILLAFUETRE_JOSHUA.Models.Song
+
+@{
+    ViewData["Title"] = "Song Details";
+}
+
+<h2 class="mb-4">🎵 Song Details</h2>
+
+<div class="card shadow-lg p-4" style="max-width:800px; margin:auto; border-radius:15px;">
+    <div class="row g-4">
+        <!-- Thumbnail / Image -->
+        <div class="col-md-4 text-center">
+            <a href="@Model.YouTubeUrl" target="_blank">
+                <img src="@Model.ImageUrl" alt="@Model.Title"
+                     class="img-fluid rounded shadow-sm"
+                     style="cursor:pointer; max-height:200px; object-fit:cover;" />
+            </a>
+        </div>
+
+        <!-- Song Details -->
+        <div class="col-md-8">
+            <h3>@Model.Title</h3>
+            <p><strong>Artist:</strong> @Model.Artist</p>
+            <p><strong>Mood:</strong> @Model.Mood</p>
+            <p><strong>Playlist:</strong> @Model.Playlist?.Name</p>
+
+            <p>
+                <a href="@Model.YouTubeUrl" class="btn btn-danger" target="_blank">
+                    ▶ Watch on YouTube
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <hr />
+
+    <!-- Embedded YouTube Player -->
+    @if (!string.IsNullOrEmpty(Model.YouTubeUrl) && !string.IsNullOrEmpty(Model.VideoId))
+    {
+        <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; max-width:100%; background:#000; border-radius:12px;">
+            <iframe src="https://www.youtube.com/embed/@Model.VideoId"
+                    style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; border-radius:12px;"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+            </iframe>
+        </div>
+    }
+</div>
+
+<div class="mt-4 text-center">
+    <a asp-action="Index" class="btn btn-secondary">⬅ Back to Playlist</a>
+</div>

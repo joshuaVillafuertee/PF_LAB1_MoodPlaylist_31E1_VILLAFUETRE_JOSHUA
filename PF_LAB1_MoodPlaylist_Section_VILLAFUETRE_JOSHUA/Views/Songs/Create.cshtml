@@ -1,0 +1,59 @@
+@using PF_LAB1_MoodPlaylist_Section_VILLAFUETRE_JOSHUA.Models
+@model Song
+
+@{
+    ViewData["Title"] = "Add Song";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label">Title</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Artist" class="form-label">Artist</label>
+        <input asp-for="Artist" class="form-control" />
+        <span asp-validation-for="Artist" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Mood" class="form-label">Mood</label>
+        <input asp-for="Mood" class="form-control" />
+        <span asp-validation-for="Mood" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="YouTubeUrl" class="form-label">YouTube URL</label>
+        <input asp-for="YouTubeUrl" class="form-control" placeholder="https://www.youtube.com/watch?v=..." />
+        <span asp-validation-for="YouTubeUrl" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ImageUrl" class="form-label">Image URL</label>
+        <input asp-for="ImageUrl" class="form-control" placeholder="https://example.com/cover.jpg" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PlaylistId" class="form-label">Playlist</label>
+        <select asp-for="PlaylistId" class="form-select" asp-items="ViewBag.PlaylistId">
+            <option value="">-- Select Playlist --</option>
+        </select>
+        <span asp-validation-for="PlaylistId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save Song</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to Playlist</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

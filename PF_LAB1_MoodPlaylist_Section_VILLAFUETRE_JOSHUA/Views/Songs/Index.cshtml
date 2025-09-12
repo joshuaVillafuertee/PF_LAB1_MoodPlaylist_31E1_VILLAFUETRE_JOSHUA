@@ -1,0 +1,37 @@
+@model IEnumerable<PF_LAB1_MoodPlaylist_Section_VILLAFUETRE_JOSHUA.Models.Song>
+
+@{
+    ViewData["Title"] = "Songs";
+}
+
+<h2 class="mb-4">@ViewData["Title"]</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">+ Add New Song</a>
+</p>
+
+<div class="row row-cols-1 row-cols-md-4 g-4">
+    @foreach (var song in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                <a asp-action="Details" asp-route-id="@song.Id">
+                    <img src="@(!string.IsNullOrEmpty(song.ImageUrl) ? song.ImageUrl : "/images/default-thumbnail.jpg")"
+                         class="card-img-top rounded"
+                         alt="@song.Title"
+                         style="object-fit: cover; height: 250px;" />
+                </a>
+                <div class="card-body bg-dark text-white">
+                    <h5 class="card-title">@song.Title</h5>
+                    <p class="card-text">@song.Artist</p>
+                    <p class="text-muted">@song.Mood</p>
+                </div>
+                <div class="card-footer bg-dark">
+                    <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Details" asp-route-id="@song.Id" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-sm btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
