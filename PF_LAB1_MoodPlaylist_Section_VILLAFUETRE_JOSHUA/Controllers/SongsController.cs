@@ -17,11 +17,16 @@ namespace PF_LAB1_MoodPlaylist_Section_VILLAFUETRE_JOSHUA.Controllers
             _context = context;
         }
 
+   
         public async Task<IActionResult> Index()
         {
-            var songs = _context.Songs.Include(s => s.Playlist);
-            return View(await songs.ToListAsync());
+            var songs = await _context.Songs
+                .Include(s => s.Playlist)
+                .ToListAsync();
+
+            return View(songs);
         }
+
 
         public IActionResult Create()
         {
@@ -107,9 +112,10 @@ namespace PF_LAB1_MoodPlaylist_Section_VILLAFUETRE_JOSHUA.Controllers
             return View(song);
         }
 
-        [HttpPost, ActionName("Delete")]
+        
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var song = await _context.Songs.FindAsync(id);
             if (song != null)

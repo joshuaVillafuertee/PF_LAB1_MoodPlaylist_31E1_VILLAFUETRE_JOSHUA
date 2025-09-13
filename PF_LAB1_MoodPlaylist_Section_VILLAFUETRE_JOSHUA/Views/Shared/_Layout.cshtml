@@ -1,32 +1,53 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using PF_LAB1_MoodPlaylist_Section_VILLAFUETRE_JOSHUA.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MoodPlaylist</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="~/css/site.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body class="bg-dark text-white">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-black px-4">
-        <a class="navbar-brand fw-bold text-success" href="/Songs">MoodPlaylist 🎵</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/Songs">Songs</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/Songs/Create">Add Song</a>
-                </li>
-            </ul>
+<body style="background-color:black; color:white; font-family:Roboto, sans-serif;">
+
+    <header style="background-color:black; padding:15px 40px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <a asp-controller="Home" asp-action="Index" style="color:#e50914; font-size:24px; font-weight:bold; text-decoration:none;">MoodPlaylist</a>
         </div>
-    </nav>
 
-    <main class="container py-4">
+        <nav>
+            <a asp-controller="Home" asp-action="Index" style="color:white; margin-right:15px; text-decoration:none;">Home</a>
+            <a asp-controller="Songs" asp-action="Index" style="color:white; margin-right:15px; text-decoration:none;">Songs</a>
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <span style="color:white; margin-right:15px;">
+                    Hello, @UserManager.GetUserName(User)
+                </span>
+                <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                    <button type="submit" style="background:none; border:none; color:#e50914; cursor:pointer;">Logout</button>
+                </form>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login" style="color:white; margin-right:15px; text-decoration:none;">Login</a>
+                <a asp-controller="Account" asp-action="Register" style="color:#e50914; text-decoration:none;">Register</a>
+            }
+        </nav>
+    </header>
+
+    <div class="container" style="margin-top:30px;">
         @RenderBody()
-    </main>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <footer style="margin-top:50px; text-align:center; padding:15px; background-color:#111;">
+        <p>&copy; @DateTime.Now.Year - MoodPlaylist</p>
+    </footer>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

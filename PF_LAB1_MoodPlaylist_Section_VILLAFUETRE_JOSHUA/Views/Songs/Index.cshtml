@@ -1,37 +1,106 @@
 @model IEnumerable<PF_LAB1_MoodPlaylist_Section_VILLAFUETRE_JOSHUA.Models.Song>
 
 @{
-    ViewData["Title"] = "Songs";
+    ViewData["Title"] = "Song List";
 }
 
-<h2 class="mb-4">@ViewData["Title"]</h2>
+<h2 class="text-white">Song List</h2>
 
 <p>
     <a asp-action="Create" class="btn btn-success">+ Add New Song</a>
 </p>
 
-<div class="row row-cols-1 row-cols-md-4 g-4">
-    @foreach (var song in Model)
-    {
-        <div class="col">
-            <div class="card h-100 shadow-sm border-0">
-                <a asp-action="Details" asp-route-id="@song.Id">
-                    <img src="@(!string.IsNullOrEmpty(song.ImageUrl) ? song.ImageUrl : "/images/default-thumbnail.jpg")"
-                         class="card-img-top rounded"
-                         alt="@song.Title"
-                         style="object-fit: cover; height: 250px;" />
-                </a>
-                <div class="card-body bg-dark text-white">
-                    <h5 class="card-title">@song.Title</h5>
-                    <p class="card-text">@song.Artist</p>
-                    <p class="text-muted">@song.Mood</p>
-                </div>
-                <div class="card-footer bg-dark">
-                    <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-sm btn-warning">Edit</a>
-                    <a asp-action="Details" asp-route-id="@song.Id" class="btn btn-sm btn-info">Details</a>
-                    <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-sm btn-danger">Delete</a>
-                </div>
+<table class="table table-dark table-bordered table-striped text-white">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>Mood</th>
+            <th>Playlist</th>
+            <th>Thumbnail</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Artist</td>
+                <td>@item.Mood</td>
+                <td>@item.Playlist?.Name</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl) && !string.IsNullOrEmpty(item.YouTubeUrl))
+                    {
+                        <a href="javascript:void(0);" onclick="openVideoModal('@item.YouTubeUrl')">
+                            <img src="@item.ImageUrl" alt="@item.Title" width="100" />
+                        </a>
+                    }
+                    else if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="@item.ImageUrl" alt="@item.Title" width="100" />
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h5 class="modal-title text-white" id="videoModalLabel">Now Playing</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <iframe id="youtubePlayer"
+                        style="width: 100%; height: 400px;"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                </iframe>
             </div>
         </div>
-    }
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        function openVideoModal(url) {
+            let embedUrl = url.replace("watch?v=", "embed/");
+            document.getElementById("youtubePlayer").src = embedUrl + "?autoplay=1";
+            var videoModal = new bootstrap.Modal(document.getElementById('videoModal'));
+            videoModal.show();
+
+            document.getElementById('videoModal').addEventListener('hidden.bs.modal', function () {
+                document.getElementById("youtubePlayer").src = "";
+            });
+        }
+    </script>
+}
+
+<style>
+ 
+    .table-dark th,
+    .table-dark td {
+        color: #ffffff !important;
+    }
+
+    
+    .table-dark tbody tr:hover {
+        background-color: #333 !important;
+    }
+
+
+    ::selection {
+        background: #555;
+        color: #fff;
+    }
+</style>
